@@ -28,8 +28,9 @@ outputs/
 /runs/
 /results/
 /checkpoints/
-/weights/*
-!/weights/.gitkeep
+/weights/
+/mass/weights/*
+!/mass/weights/.gitkeep
 events.out.tfevents.*
 scripts/paths.local.sh
 *.private.md

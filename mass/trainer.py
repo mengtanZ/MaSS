@@ -4,6 +4,7 @@ import json
 import os
 import random
 import time
+from pathlib import Path
 import numpy as np
 import torch
 import torch.nn as nn
@@ -16,12 +17,11 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from PIL import Image
-import datasets
-import networks
-from networks.layers import *
-from networks.contrastive_loss import compute_contrastive_lossesv2
-from networks.linear_warmup_cosine_annealing_warm_restarts_weight_decay import ChainedScheduler
-from utils.utils import *
+from . import datasets, networks
+from .networks.layers import *
+from .networks.contrastive_loss import compute_contrastive_lossesv2
+from .networks.linear_warmup_cosine_annealing_warm_restarts_weight_decay import ChainedScheduler
+from .utils.utils import *
 random.seed(640)
 np.random.seed(640)
 torch.manual_seed(640)
@@ -80,9 +80,9 @@ class Trainer:
         val_datasets = []
         for dataset_name, split_name, data_path in zip(dataset_names, split_names, data_paths):
             dataset_class = datasets_dict[dataset_name]
-            with open(f'splits/{split_name}/train_files.txt', 'r') as f:
+            with open(Path(__file__).resolve().parent / 'splits' / split_name / 'train_files.txt', 'r') as f:
                 train_filenames = f.read().splitlines()
-            with open(f'splits/{split_name}/val_files.txt', 'r') as f:
+            with open(Path(__file__).resolve().parent / 'splits' / split_name / 'val_files.txt', 'r') as f:
                 val_filenames = f.read().splitlines()
             img_ext = '.png' if self.opt.png else '.jpg'
             train_dataset = dataset_class(data_path, train_filenames, self.opt.height, self.opt.width, self.opt.frame_ids, 4, is_train=True, img_ext=img_ext, psedo_depth='psedo_depth')

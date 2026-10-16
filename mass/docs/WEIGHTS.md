@@ -7,7 +7,7 @@ Download the official **DINOv2 ViT-B/14 with registers** checkpoint:
 - [Official DINOv2 repository and pretrained-model table](https://github.com/facebookresearch/dinov2)
 - [ViT-B/14 register checkpoint](https://dl.fbaipublicfiles.com/dinov2/dinov2_vitb14/dinov2_vitb14_reg4_pretrain.pth)
 
-Save it as `weights/dinov2_vitb14_reg4_pretrain.pth`, or pass `--dino_weights /path/to/file.pth` to training. The loader preserves the original architecture and pretrained state-key names. Only spatial-prior, injector, extractor, level embeddings, projection/fusion modules, depth decoder and pose network parameters are trained; the DINOv2 transformer parameters remain frozen.
+Save it as `mass/weights/dinov2_vitb14_reg4_pretrain.pth`, or pass `--dino_weights /path/to/file.pth` to training. The loader preserves the original architecture and pretrained state-key names. Only spatial-prior, injector, extractor, level embeddings, projection/fusion modules, depth decoder and pose network parameters are trained; the DINOv2 transformer parameters remain frozen.
 
 The pose encoder uses the torchvision ImageNet-pretrained ResNet-18 checkpoint, downloaded to PyTorch's cache on first use. For offline use, populate that cache in advance.
 
@@ -20,9 +20,9 @@ A complete MaSS evaluation folder contains `encoder.pth` and `depth.pth`. The en
 The mixed-dataset checkpoint is hosted separately on [Hugging Face](https://huggingface.co/mengtanZ/MaSS/tree/main/mass_mix). Download both files into the default evaluation folder:
 
 ```bash
-mkdir -p weights/mass_mix
-curl -L --fail https://huggingface.co/mengtanZ/MaSS/resolve/main/mass_mix/encoder.pth -o weights/mass_mix/encoder.pth
-curl -L --fail https://huggingface.co/mengtanZ/MaSS/resolve/main/mass_mix/depth.pth -o weights/mass_mix/depth.pth
+mkdir -p mass/weights/mass_mix
+curl -L --fail https://huggingface.co/mengtanZ/MaSS/resolve/main/mass_mix/encoder.pth -o mass/weights/mass_mix/encoder.pth
+curl -L --fail https://huggingface.co/mengtanZ/MaSS/resolve/main/mass_mix/depth.pth -o mass/weights/mass_mix/depth.pth
 bash scripts/testing_submit.sh
 ```
 

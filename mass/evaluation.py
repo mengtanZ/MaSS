@@ -11,10 +11,10 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
-import datasets
-from networks import MaSS_Encoder, DepthDecoder
-from networks.layers import disp_to_depth
-from utils.utils import readlines
+from . import datasets
+from .networks import MaSS_Encoder, DepthDecoder
+from .networks.layers import disp_to_depth
+from .utils.utils import readlines
 
 PROTOCOLS = {
     'kitti': ('eigen', 0.001, 80),

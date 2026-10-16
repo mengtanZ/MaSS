@@ -4,7 +4,7 @@ Use the supplied split files exactly. Training uses preprocessed monocular seque
 
 ## Training layout
 
-The four datasets use `splits/{ddad,nyu,eigen_zhou_pp,nuscenes}/{train,val}_files.txt`. Each entry is `relative_sequence frame_index side`. The final side token may be a placeholder for preprocessed data. For example:
+The four datasets use `mass/splits/{ddad,nyu,eigen_zhou_pp,nuscenes}/{train,val}_files.txt`. Each entry is `relative_sequence frame_index side`. The final side token may be a placeholder for preprocessed data. For example:
 
 ```text
 DATA_ROOT/ddad/training/

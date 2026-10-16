@@ -78,30 +78,51 @@ conda activate mass
 python -m pip install -r requirements.txt
 ```
 
-The root `requirements.txt` installs the reference GPU stack and the MaSS dependencies. A fully pinned dependency snapshot is available at [`requirements/lock-cu117.txt`](requirements/lock-cu117.txt).
+The root `requirements.txt` installs the GPU stack from [`mass/requirements/cu117.txt`](mass/requirements/cu117.txt) and the dependencies from [`mass/requirements/base.txt`](mass/requirements/base.txt). A fully pinned dependency snapshot is available at [`mass/requirements/lock-cu117.txt`](mass/requirements/lock-cu117.txt).
+
+Run the following commands from the repository root with the `mass` environment activated. The shell scripts invoke the Python package using `python -m mass.train` and `python -m mass.evaluate_depth_submit` (or `python -m mass.evaluate_city` for Cityscapes).
+
+### Repository layout
+
+```text
+MaSS/
+├── assets/               # paper figures used in this README
+├── mass/
+│   ├── datasets/         # data loaders
+│   ├── dinoV2/           # DINOv2 backbone and adapters
+│   ├── networks/         # depth, pose and contrastive components
+│   ├── splits/           # training and evaluation file lists
+│   ├── utils/
+│   ├── docs/             # data and checkpoint guides
+│   ├── licenses/         # third-party licenses and notices
+│   ├── requirements/     # dependency lists and pinned snapshot
+│   ├── weights/          # downloaded checkpoints (ignored by Git)
+│   ├── train.py
+│   ├── trainer.py
+│   └── evaluation.py     # shared evaluation protocols
+├── scripts/
+│   ├── training_submit.sh
+│   └── testing_submit.sh
+├── LICENSE
+├── README.md
+├── environment.yml
+└── requirements.txt
+```
 
 ### 1. Prepare data
 
 Place the prepared datasets under `data/`, or create local symlinks to their existing locations. The scripts use `DATA_ROOT=data` by default; edit their path variables or set `DATA_ROOT` when using another location.
 
 ```text
-MaSS/
-├── data/
-│   ├── ddad/             # training/ and testing/
-│   ├── nyu/              # training/ and testing/
-│   ├── kitti/            # preprocessed training/ and testing/depth/
-│   ├── nuscenes/         # training/ and testing/
-│   └── kitti_raw/        # raw KITTI PNG images for evaluation
-├── weights/
-│   ├── dinov2_vitb14_reg4_pretrain.pth
-│   └── mass_mix/
-│       ├── encoder.pth
-│       └── depth.pth
-├── scripts/
-│   ├── training_submit.sh
-│   └── testing_submit.sh
-└── splits/
+data/
+├── ddad/                 # training/ and testing/
+├── nyu/                  # training/ and testing/
+├── kitti/                # preprocessed training/ and testing/depth/
+├── nuscenes/             # training/ and testing/
+└── kitti_raw/            # raw KITTI PNG images for evaluation
 ```
+
+Training requires temporal RGB frames, camera intrinsics and prepared pseudo-depth maps under `psedo_depth/`. See [the data preparation guide](mass/docs/DATASETS.md) for the required layouts, encodings and evaluation ground truth. Local datasets, downloaded weights and run outputs are ignored by Git.
 
 The preprocessed [**[KITTI]**](https://github.com/JiawangBian/sc_depth_pl) and [**[DDAD]**](https://github.com/JiawangBian/sc_depth_pl) datasets are provided by the project [SC-DepthV3](https://github.com/JiawangBian/sc_depth_pl). <br>
 For the [**[nuScenes]**](https://www.nuscenes.org/) dataset, you can download the original data from their official websites, preprocess them by following the instructions from the [Dynamo-Depth](https://github.com/YihongSun/Dynamo-Depth) project, and organize them into the above format. <br>
@@ -111,12 +132,12 @@ For the [**[nuScenes]**](https://www.nuscenes.org/) dataset, you can download th
 **For training**, download the official [DINOv2 ViT-B/14 checkpoint with four registers](https://dl.fbaipublicfiles.com/dinov2/dinov2_vitb14/dinov2_vitb14_reg4_pretrain.pth) and save it as:
 
 ```text
-weights/dinov2_vitb14_reg4_pretrain.pth
+mass/weights/dinov2_vitb14_reg4_pretrain.pth
 ```
 
-**For evaluation**, download `encoder.pth` and `depth.pth` from [the MaSS mixed-dataset checkpoint on Hugging Face](https://huggingface.co/mengtanZ/MaSS/tree/main/mass_mix) and place both files in `weights/mass_mix/`. A complete encoder checkpoint already contains the frozen DINOv2 backbone.
+**For evaluation**, download `encoder.pth` and `depth.pth` from [the MaSS mixed-dataset checkpoint on Hugging Face](https://huggingface.co/mengtanZ/MaSS/tree/main/mass_mix) and place both files in `mass/weights/mass_mix/`. A complete encoder checkpoint already contains the frozen DINOv2 backbone.
 
-See [the weight guide](docs/WEIGHTS.md) for download commands, initialization and checkpoint contents.
+See [the weight guide](mass/docs/WEIGHTS.md) for download commands, initialization and checkpoint contents.
 
 ## Training
 
@@ -128,9 +149,11 @@ bash scripts/training_submit.sh
 
 The default command trains **one mixed model on DDAD + NYUv2 + KITTI + nuScenes** at 384×640 with batch size 6. The four single-dataset commands are directly below it in the same script and are commented out. To select one, comment out the mixed command and enable that dataset's `DATA_PATH` assignment and Python command.
 
+Training checkpoints are saved under `tmp/<model_name>/models/`. The default mixed run uses 10 epochs; its final checkpoint is `tmp/mass_mix/models/weights_9/` because epoch indices start at zero.
+
 ## Evaluation
 
-With the trained mixed checkpoint prepared under `weights/mass_mix/`, run:
+With the trained mixed checkpoint prepared under `mass/weights/mass_mix/`, run:
 
 ```bash
 bash scripts/testing_submit.sh
@@ -144,7 +167,7 @@ To evaluate the checkpoint produced by your own training run:
 WEIGHTS=tmp/mass_mix/models/weights_9 bash scripts/testing_submit.sh
 ```
 
-Each evaluation writes one row of metrics to `eval/<dataset>.csv`: **Abs Rel, Sq Rel, RMSE, RMSE log, δ₁, δ₂ and δ₃**, together with the checkpoint path, image count and input resolution. Evaluation uses the input size stored in the checkpoint unless explicitly overridden, and applies per-image median scaling by default. Dataset layouts and crop conventions are documented in [docs/DATASETS.md](docs/DATASETS.md).
+Each evaluation writes one row of metrics to `eval/<dataset>.csv`: **Abs Rel, Sq Rel, RMSE, RMSE log, δ₁, δ₂ and δ₃**, together with the checkpoint path, image count and input resolution. Evaluation uses the input size stored in the checkpoint unless explicitly overridden, and applies per-image median scaling by default. Dataset layouts and crop conventions are documented in [the data preparation guide](mass/docs/DATASETS.md).
 
 ## Citation
 
@@ -161,7 +184,7 @@ If MaSS is useful for your research, please cite the manuscript:
 
 ## 📧 Contact
 
-If you have any questions, feel free to contact us via issue or [email](zmt200110@tongji.edu.cn).
+If you have any questions, feel free to contact us via issue or [email](mailto:zmt200110@tongji.edu.cn).
 
 ## Acknowledgements
 
@@ -169,4 +192,4 @@ We thank the authors of [DINOv2](https://github.com/facebookresearch/dinov2), [L
 
 ## License
 
-MaSS contributions are released under the [MIT license](LICENSE). Third-party components retain their original terms, including DINOv2's Apache 2.0 license and the non-commercial terms of inherited Monodepth2 components. See [the third-party notices](licenses/THIRD_PARTY_NOTICES.md) for details. Dataset and checkpoint licenses are separate from the source-code license.
+MaSS contributions are released under the [MIT license](LICENSE). Third-party components retain their original terms, including DINOv2's Apache 2.0 license and the non-commercial terms of inherited Monodepth2 components. See [the third-party notices](mass/licenses/THIRD_PARTY_NOTICES.md) for details. Dataset and checkpoint licenses are separate from the source-code license.

@@ -1,2 +1,2 @@
 # Default installation: the validated PyTorch CUDA 11.7 stack and MaSS dependencies.
--r requirements/cu117.txt
+-r mass/requirements/cu117.txt

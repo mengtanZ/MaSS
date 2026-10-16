@@ -4,7 +4,7 @@ import numpy as np
 import torch
 from torch import nn
 import torchvision.transforms as T
-from dinoV2.dinov2.models import vit_base
+from ..dinoV2.dinov2.models import vit_base
 
 class DINOv2Wrapper(nn.Module):
     def __init__(self, weights_path=None, freeze=True):
@@ -84,7 +84,7 @@ class MaSS_Encoder(nn.Module):
         if pretrained:
             weights_path = weights_path or os.environ.get('MASS_DINO_WEIGHTS') or str(Path(__file__).resolve().parents[1] / 'weights/dinov2_vitb14_reg4_pretrain.pth')
             if not Path(weights_path).is_file():
-                raise FileNotFoundError(f'DINOv2 weights not found: {weights_path}. See docs/WEIGHTS.md.')
+                raise FileNotFoundError(f'DINOv2 weights not found: {weights_path}. See mass/docs/WEIGHTS.md.')
         self.dino = DINOv2Wrapper(weights_path if pretrained else None, freeze)
         self.contextual_proj = Projector(in_channels=self.dino.embed_dim)
         self.structural_proj = Projector(in_channels=self.dino.embed_dim)

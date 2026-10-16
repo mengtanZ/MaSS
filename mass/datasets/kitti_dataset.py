@@ -5,7 +5,7 @@ import numpy as np
 import PIL.Image as pil
 from pathlib import Path
 from numpy.typing import NDArray
-from utils.kitti_utils import generate_depth_map
+from ..utils.kitti_utils import generate_depth_map
 from .mono_dataset import MonoDataset
 from PIL import Image
 

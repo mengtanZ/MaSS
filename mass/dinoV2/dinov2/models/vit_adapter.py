@@ -17,8 +17,8 @@ import torch
 import torch.nn as nn
 import torch.utils.checkpoint
 from torch.nn.init import trunc_normal_
-from dinoV2.dinov2.layers import Mlp, PatchEmbed, SwiGLUFFNFused, MemEffAttention, NestedTensorBlock as Block
-from dinoV2.dinov2.layers import SpatialPriorModule, Injector, Extractor
+from ..layers import Mlp, PatchEmbed, SwiGLUFFNFused, MemEffAttention, NestedTensorBlock as Block
+from ..layers import SpatialPriorModule, Injector, Extractor
 logger = logging.getLogger('dinov2')
 
 def named_apply(fn: Callable, module: nn.Module, name='', depth_first=True, include_root=False) -> nn.Module:
