@@ -5,6 +5,8 @@
 <p><a href="https://scholar.google.cz/citations?user=uanS4aIAAAAJ&amp;hl=zh-CN&amp;oi=sra">Mengtan Zhang</a> · Yuchuan Cui · Yu Ma · Zizhan Guo · Wei Ye · <a href="https://scholar.google.cz/citations?user=P5AJTXcAAAAJ&amp;hl=zh-CN&amp;oi=sra">Rui Fan</a><sup>✉</sup></p>
 <p>Tongji University<br><sup>✉</sup> Corresponding author</p>
 <p>
+<!-- Add the arXiv URL around this badge when the paper is available. -->
+<img src="https://img.shields.io/badge/arXiv-MaSS-b31b1b" alt="arXiv: MaSS">
 <a href="https://mias.group/MaSS/"><img src="https://img.shields.io/badge/Project_Page-MaSS-78A100" alt="Project Page"></a>
 <a href="https://huggingface.co/mengtanZ/MaSS/"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-blue" alt="Hugging Face Models"></a>
 </p>
