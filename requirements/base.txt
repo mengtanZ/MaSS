@@ -1,0 +1,13 @@
+# Direct dependencies pinned from the validated reference environment (Python 3.9.25).
+# Install the matching PyTorch CUDA build using cu117.txt first.
+numpy==1.26.4
+scipy==1.13.1
+Pillow==11.3.0
+opencv-python==4.8.1.78
+imageio==2.37.2
+matplotlib==3.9.4
+timm==1.0.25
+kornia==0.8.2
+tensorboardX==2.6.4
+tqdm==4.67.3
+scikit-image==0.24.0

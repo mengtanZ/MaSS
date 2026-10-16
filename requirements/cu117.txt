@@ -1,0 +1,6 @@
+# Reference GPU stack from the validated reference environment.
+--extra-index-url https://download.pytorch.org/whl/cu117
+torch==2.0.1+cu117
+torchvision==0.15.2+cu117
+xformers==0.0.20
+-r base.txt

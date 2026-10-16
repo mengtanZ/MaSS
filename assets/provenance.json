@@ -1,0 +1,38 @@
+{
+  "source_document": "NeurIPS_2026_mtzhang.pdf",
+  "source_sha256": "01d40f06d9f122faef72edb647db28b95f2595854470208caacc4dafa6ad0f18",
+  "render_dpi": 288,
+  "coordinate_system": "PDF points, origin at upper left",
+  "assets": {
+    "teaser": {
+      "page": 1,
+      "figure": 1,
+      "box": [
+        108,
+        216,
+        501,
+        455
+      ]
+    },
+    "overview": {
+      "page": 4,
+      "figure": 3,
+      "box": [
+        108,
+        70,
+        501,
+        201
+      ]
+    },
+    "qualitative": {
+      "page": 7,
+      "figure": 4,
+      "box": [
+        108,
+        304,
+        501,
+        495
+      ]
+    }
+  }
+}
