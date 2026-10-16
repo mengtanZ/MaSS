@@ -14,7 +14,7 @@
 
 </div>
 
-**MaSS makes self-supervised monocular depth learning scalable to diverse scenes.** It separates contextual and structural representations, helping a single depth model learn across indoor, outdoor, dynamic and adverse-weather domains.
+**MaSS makes self-supervised monocular depth learning scalable to diverse scenes.** It separates contextual and structural representations, helping a single depth model learn across indoor and outdoor environments, dynamic scenes, adverse weather, and beyond.
 
 ![MaSS overview of mixed-domain learning and out-of-distribution generalization](assets/teaser.png)
 
@@ -22,7 +22,7 @@
 
 ## 🌟 Highlights
 
-- **Learn scene structure.** Dedicated contextual and structural pathways separate semantic context from spatial layout.
+- **Learn scene structure.** Dedicated contextual and structural pathways separate spatial layout from semantic context.
 - **Adapt a frozen visual backbone.** Bidirectional interaction brings trainable geometric features into a pretrained DINOv2 ViT-B/14 backbone.
 - **Train one model across domains.** A unified recipe mixes DDAD, NYUv2, KITTI and nuScenes; four individual-dataset recipes are also provided.
 - **Evaluate beyond the training domains.** The paper studies zero-shot transfer on eight additional benchmarks spanning driving, indoor and out-of-distribution scenes.
